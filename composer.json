@@ -1,5 +1,5 @@
 {
-    "name": "brick/geo",
+    "name": "webnuvola/geo",
     "description": "GIS geometry library",
     "type": "library",
     "keywords": [
@@ -19,6 +19,9 @@
         "doctrine/data-fixtures": "1.*",
         "phpunit/phpunit": "7.*",
         "php-coveralls/php-coveralls": "2.*"
+    },
+    "replace": {
+        "brick/geo": "self.version"
     },
     "autoload": {
         "psr-4": {
