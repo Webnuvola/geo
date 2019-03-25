@@ -140,7 +140,7 @@ class GeoJSONReader
             throw GeometryIOException::invalidGeoJSON('Missing or malformed "Feature.geometry" attribute.');
         }
 
-        return $this->readGeometry($feature['geometry']);
+        return $this->readGeometry($feature['geometry'], $feature['properties'] ?? null);
     }
 
     /**
@@ -150,7 +150,7 @@ class GeoJSONReader
      *
      * @throws GeometryException If the GeoJSON file is invalid.
      */
-    private function readGeometry(array $geometry) : Geometry
+    private function readGeometry(array $geometry, array $properties = null) : Geometry
     {
         // Verify geometry `type`
         if (! isset($geometry['type']) || ! is_string($geometry['type'])) {
@@ -174,22 +174,28 @@ class GeoJSONReader
 
         switch ($geoType) {
             case 'Point':
-                return $this->genPoint($cs, $geoCoords);
+                return $this->genPoint($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
 
             case 'MultiPoint':
-                return $this->genMultiPoint($cs, $geoCoords);
+                return $this->genMultiPoint($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
 
             case 'LineString':
-                return $this->genLineString($cs, $geoCoords);
+                return $this->genLineString($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
 
             case 'MultiLineString':
-                return $this->genMultiLineString($cs, $geoCoords);
+                return $this->genMultiLineString($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
 
             case 'Polygon':
-                return $this->genPolygon($cs, $geoCoords);
+                return $this->genPolygon($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
 
             case 'MultiPolygon':
-                return $this->genMultiPolygon($cs, $geoCoords);
+                return $this->genMultiPolygon($cs, $geoCoords)
+                    ->setProperties($properties ?? []);
         }
 
         throw GeometryIOException::unsupportedGeoJSONType($geoType);

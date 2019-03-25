@@ -54,15 +54,24 @@ abstract class Geometry implements \Countable, \IteratorAggregate
     protected $isEmpty;
 
     /**
+     * Properties of this geometry.
+     *
+     * @var array
+     */
+    protected $properties;
+
+    /**
      * Class constructor.
      *
      * @param CoordinateSystem $coordinateSystem The coordinate system of this geometry.
      * @param bool             $isEmpty          Whether this geometry is empty.
+     * @param array            $properties       Properties of this geometry.
      */
-    protected function __construct(CoordinateSystem $coordinateSystem, bool $isEmpty)
+    protected function __construct(CoordinateSystem $coordinateSystem, bool $isEmpty, array $properties = null)
     {
         $this->coordinateSystem = $coordinateSystem;
         $this->isEmpty          = $isEmpty;
+        $this->properties       = $properties ?? [];
     }
 
     /**
@@ -741,5 +750,27 @@ abstract class Geometry implements \Countable, \IteratorAggregate
     final public function __toString() : string
     {
         return $this->asText();
+    }
+
+    /**
+     * Set properties of this geometry.
+     *
+     * @param  array $properties
+     * @return self
+     */
+    function setProperties(array $properties) : self
+    {
+        $this->properties = $properties;
+        return $this;
+    }
+
+    /**
+     * Get properties of this geometry.
+     *
+     * @return array
+     */
+    function getProperties() : array
+    {
+        return $this->properties;
     }
 }
